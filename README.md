@@ -4,9 +4,7 @@ A Rapidly-exploring Random Tree is an algorithm used for robot path planning.
 
 This is a Python implementation that uses the Numpy, Matplotlib and Scipy libraries.
 
-The code is implemented on the file *'rrt.py'*. The seventh line of that file is a PNG image representing the map in which the robot has to plan it's route. Images must be black and white, white for free spaces and black for obstacles.
-
-*In the future image's path will be passed as arguments.*
+The code is implemented on the file *'rrt.py'*. The seventh line of that file is a PNG image representing the map in which the robot has to plan it's route. Images must be black and white, white for free spaces and black for obstacles. Three image files are given as an example.
 
 Once executed the code, you have to clic on the image to select a starting point for the robot, and once again to select a goal point. The algorithm will start generating random points in the image and connecting those points to the nearest point, generating a tree of points.
 
