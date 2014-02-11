@@ -7,7 +7,7 @@ import random, sys, math
 MAP_IMG = './lab-map-scaled.png'  #Black and white image for a map
 MIN_NUM_VERT = 200  #Minimum number of vertex in the graph
 MAX_NUM_VERT = 1500 #Maximum number of vertex in the graph
-STEP_DISTANCE = 2000  #Maximum distance between two vertex
+STEP_DISTANCE = 20  #Maximum distance between two vertex
 SEED = None   #For random numbers
 
 def rapidlyExploringRandomTree(ax, img, start, goal, seed=None):
