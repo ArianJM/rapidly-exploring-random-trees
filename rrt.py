@@ -2,10 +2,10 @@ import numpy as np
 from matplotlib import pyplot as ppl
 from matplotlib import cm
 from scipy.misc import imread
-import random, sys, math
+import random, sys, math, os.path
 
 MAP_IMG = './lab-map-scaled.png'  #Black and white image for a map
-MIN_NUM_VERT = 200  #Minimum number of vertex in the graph
+MIN_NUM_VERT = 20  #Minimum number of vertex in the graph
 MAX_NUM_VERT = 1500 #Maximum number of vertex in the graph
 STEP_DISTANCE = 20  #Maximum distance between two vertex
 SEED = None   #For random numbers
@@ -167,7 +167,7 @@ def selectStartGoalPoints(ax, img):
   return start, goal
 
 def main():
-  print 'Loading map...'
+  print 'Loading map... with file \'', MAP_IMG,'\''
   img = imread(MAP_IMG)
   fig = ppl.gcf()
   fig.clf()
@@ -178,5 +178,12 @@ def main():
   print 'Map is', len(img[0]), 'x', len(img)
   start, goal = selectStartGoalPoints(ax, img)
   path = rapidlyExploringRandomTree(ax, img, start, goal, seed=SEED)
+
+if len(sys.argv) > 2:
+  print 'Only one argument is needed'
+elif len(sys.argv) > 1:
+  if os.path.isfile(sys.argv[1]):
+    MAP_IMG = sys.argv[1]
+  else: print sys.argv[1], 'is not a file'
 
 main()
