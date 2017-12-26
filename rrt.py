@@ -21,10 +21,10 @@ def rapidlyExploringRandomTree(ax, img, start, goal, seed=None):
   occupied = True
   phaseTwo = False
   #Phase two values (points 5 step distances around the goal point)
-  minX = goal[0]-5*STEP_DISTANCE if goal[0]-5*STEP_DISTANCE > 0 else 0
-  maxX = goal[0]+5*STEP_DISTANCE if goal[0]+5*STEP_DISTANCE < len(img[0])-1 else len(img[0])-1
-  minY = goal[1]-5*STEP_DISTANCE if goal[1]-5*STEP_DISTANCE > 0 else 0
-  maxY = goal[1]+5*STEP_DISTANCE if goal[1]+5*STEP_DISTANCE < len(img)-1 else len(img)-1
+  minX = max(goal[0]-5*STEP_DISTANCE, 0)
+  maxX = min(goal[0]+5*STEP_DISTANCE, len(img[0])-1)
+  minY = max(goal[1]-5*STEP_DISTANCE, 0)
+  maxY = min(goal[1]+5*STEP_DISTANCE, len(img)-1)
 
   i = 0
   while (goal not in points) and (len(points) < MAX_NUM_VERT):
