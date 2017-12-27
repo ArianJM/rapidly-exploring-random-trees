@@ -21,10 +21,10 @@ def rapidlyExploringRandomTree(ax, img, start, goal, seed=None):
   occupied = True
   phaseTwo = False
   #Phase two values (points 5 step distances around the goal point)
-  minX = goal[0]-5*STEP_DISTANCE if goal[0]-5*STEP_DISTANCE > 0 else 0
-  maxX = goal[0]+5*STEP_DISTANCE if goal[0]+5*STEP_DISTANCE < len(img[0])-1 else len(img[0])-1
-  minY = goal[1]-5*STEP_DISTANCE if goal[1]-5*STEP_DISTANCE > 0 else 0
-  maxY = goal[1]+5*STEP_DISTANCE if goal[1]+5*STEP_DISTANCE < len(img)-1 else len(img)-1
+  minX = max(goal[0]-5*STEP_DISTANCE, 0)
+  maxX = min(goal[0]+5*STEP_DISTANCE, len(img[0])-1)
+  minY = max(goal[1]-5*STEP_DISTANCE, 0)
+  maxY = min(goal[1]+5*STEP_DISTANCE, len(img)-1)
 
   i = 0
   while (goal not in points) and (len(points) < MAX_NUM_VERT):
@@ -118,7 +118,7 @@ def connectPoints(a, b, img):
       coordY = round(newPoints[i][1]+step[1]*j)
       if coordX == a[0] and coordY == a[1]: break
       if coordY >= len(img) or coordX >= len(img[0]): break
-      if img[coordY][coordX][0] < 255: blocked = True
+      if img[int(coordY)][int(coordX)][0] < 255: blocked = True
       if blocked: break
     if blocked: break
     if not (coordX == a[0] and coordY == a[1]):
@@ -143,7 +143,7 @@ def selectStartGoalPoints(ax, img):
   while(occupied):
     point = ppl.ginput(1, timeout=-1, show_clicks=False, mouse_pop=2)
     start = [round(point[0][0]), round(point[0][1])]
-    if(img[start[1]][start[0]][0]==255):
+    if(img[int(start[1])][int(start[0])][0]==255):
       occupied = False
       ax.plot(start[0], start[1], '.r')
     else:
@@ -156,7 +156,7 @@ def selectStartGoalPoints(ax, img):
   while(occupied):
     point = ppl.ginput(1, timeout=-1, show_clicks=False, mouse_pop=2)
     goal = [round(point[0][0]), round(point[0][1])]
-    if(img[goal[1]][goal[0]][0] == 255):
+    if(img[int(goal[1])][int(goal[0])][0] == 255):
       occupied = False
       ax.plot(goal[0], goal[1], '.b')
     else:
