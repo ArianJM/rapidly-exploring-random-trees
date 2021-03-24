@@ -1,7 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as ppl
 from matplotlib import cm
-#from scipy.misc import imread
 import random, sys, math, os.path
 from matplotlib.pyplot import imread
 MAP_IMG = './lab-map-scaled.png' # Black and white image for a map
