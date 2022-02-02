@@ -1,9 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as ppl
 from matplotlib import cm
-from scipy.misc import imread
 import random, sys, math, os.path
-
+from matplotlib.pyplot import imread
 MAP_IMG = './lab-map-scaled.png' # Black and white image for a map
 MIN_NUM_VERT = 20 # Minimum number of vertex in the graph
 MAX_NUM_VERT = 1500 # Maximum number of vertex in the graph
@@ -17,7 +16,7 @@ def rapidlyExploringRandomTree(ax, img, start, goal, seed=None):
   graph = []
   points.append(start)
   graph.append((start, []))
-  print 'Generating and conecting random points'
+  print ('Generating and conecting random points')
   occupied = True
   phaseTwo = False
 
@@ -30,10 +29,10 @@ def rapidlyExploringRandomTree(ax, img, start, goal, seed=None):
   i = 0
   while (goal not in points) and (len(points) < MAX_NUM_VERT):
     if (i % 100) == 0:
-      print i, 'points randomly generated'
+      print (i, 'points randomly generated')
 
     if (len(points) % hundreds) == 0:
-      print len(points), 'vertex generated'
+      print (len(points), 'vertex generated')
       hundreds = hundreds + 100
 
     while(occupied):
@@ -42,7 +41,7 @@ def rapidlyExploringRandomTree(ax, img, start, goal, seed=None):
       else:
         point = [ random.randint(0, len(img[0]) - 1), random.randint(0, len(img) - 1) ]
 
-      if(img[point[1]][point[0]][0] == 255):
+      if(img[point[1]][point[0]][0] * 255 == 255):
         occupied = False
 
     occupied = True
@@ -57,7 +56,7 @@ def rapidlyExploringRandomTree(ax, img, start, goal, seed=None):
 
     if len(points) >= MIN_NUM_VERT:
       if not phaseTwo:
-        print 'Phase Two'
+        print ('Phase Two')
       phaseTwo = True
 
     if phaseTwo:
@@ -69,21 +68,21 @@ def rapidlyExploringRandomTree(ax, img, start, goal, seed=None):
       ppl.draw()
 
   if goal in points:
-    print 'Goal found, total vertex in graph:', len(points), 'total random points generated:', i
+    print ('Goal found, total vertex in graph:', len(points), 'total random points generated:', i)
     path = searchPath(graph, start, [start])
 
     for i in range(len(path)-1):
       ax.plot([ path[i][0], path[i+1][0] ], [ path[i][1], path[i+1][1] ], color='g', linestyle='-', linewidth=2)
       ppl.draw()
 
-    print 'Showing resulting map'
-    print 'Final path:', path
-    print 'The final path is made from:', len(path),'connected points'
+    print ('Showing resulting map')
+    print ('Final path:', path)
+    print ('The final path is made from:', len(path),'connected points')
   else:
     path = None
-    print 'Reached maximum number of vertex and goal was not found'
-    print 'Total vertex in graph:', len(points), 'total random points generated:', i
-    print 'Showing resulting map'
+    print ('Reached maximum number of vertex and goal was not found')
+    print ('Total vertex in graph:', len(points), 'total random points generated:', i)
+    print ('Showing resulting map')
 
   ppl.show()
   return path
@@ -154,7 +153,7 @@ def connectPoints(a, b, img):
         break
       if coordY >= len(img) or coordX >= len(img[0]):
         break
-      if img[int(coordY)][int(coordX)][0] < 255:
+      if img[int(coordY)][int(coordX)][0] * 255 < 255:
         blocked = True
       if blocked:
         break
@@ -169,7 +168,7 @@ def connectPoints(a, b, img):
   return newPoints
 
 def findNearestPoint(points, point):
-  best = (sys.maxint, sys.maxint, sys.maxint)
+  best = (sys.maxsize, sys.maxsize, sys.maxsize)
   for p in points:
     if p == point:
       continue
@@ -179,37 +178,39 @@ def findNearestPoint(points, point):
   return (best[0], best[1])
 
 def selectStartGoalPoints(ax, img):
-  print 'Select a starting point'
+  print ('Select a starting point')
   ax.set_xlabel('Select a starting point')
   occupied = True
   while(occupied):
     point = ppl.ginput(1, timeout=-1, show_clicks=False, mouse_pop=2)
+   
     start = [ round(point[0][0]), round(point[0][1]) ]
-    if(img[int(start[1])][int(start[0])][0] == 255):
+    
+    if(img[int(start[1])][int(start[0])][0] * 255 == 255):
       occupied = False
       ax.plot(start[0], start[1], '.r')
     else:
-      print 'Cannot place a starting point there'
+      print ('Cannot place a starting point there')
       ax.set_xlabel('Cannot place a starting point there, choose another point')
 
-  print 'Select a goal point'
+  print ('Select a goal point')
   ax.set_xlabel('Select a goal point')
   occupied = True
   while(occupied):
     point = ppl.ginput(1, timeout=-1, show_clicks=False, mouse_pop=2)
     goal = [ round(point[0][0]), round(point[0][1]) ]
-    if(img[int(goal[1])][int(goal[0])][0] == 255):
+    if(img[int(goal[1])][int(goal[0])][0] * 255 == 255):
       occupied = False
       ax.plot(goal[0], goal[1], '.b')
     else:
-      print 'Cannot place a goal point there'
+      print ('Cannot place a goal point there')
       ax.set_xlabel('Cannot place a goal point there, choose another point')
 
   ppl.draw()
   return start, goal
 
 def main():
-  print 'Loading map... with file \'', MAP_IMG,'\''
+  print ('Loading map... with file \'', MAP_IMG,'\'')
   img = imread(MAP_IMG)
   fig = ppl.gcf()
   fig.clf()
@@ -217,17 +218,17 @@ def main():
   ax.imshow(img, cmap=cm.Greys_r)
   ax.axis('image')
   ppl.draw()
-  print 'Map is', len(img[0]), 'x', len(img)
+  print ('Map is', len(img[0]), 'x', len(img))
   start, goal = selectStartGoalPoints(ax, img)
   path = rapidlyExploringRandomTree(ax, img, start, goal, seed=SEED)
 
 if len(sys.argv) > 2:
-  print 'Only one argument is needed'
+  print ('Only one argument is needed')
 elif len(sys.argv) > 1:
   if os.path.isfile(sys.argv[1]):
     MAP_IMG = sys.argv[1]
   else:
-    print sys.argv[1], 'is not a file'
+    print (sys.argv[1], 'is not a file')
 
 
 main()
